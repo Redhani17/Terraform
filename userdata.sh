@@ -17,9 +17,13 @@ systemctl enable docker
 usermod -aG docker ec2-user
 
 # -----------------------------
-# Install Java (Required for Jenkins)
+# Install Java 17 (Required for Jenkins)
 # -----------------------------
-amazon-linux-extras install java-openjdk11 -y
+yum install -y java-17-openjdk
+
+# Set JAVA_HOME automatically
+JAVA_PATH=$(dirname $(dirname $(readlink -f $(which java))))
+echo "JAVA_HOME=$JAVA_PATH" >> /etc/environment
 
 # -----------------------------
 # Install Jenkins
