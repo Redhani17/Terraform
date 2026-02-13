@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-north-1"
-}
-
 # -----------------------------
 # Security Group
 # -----------------------------
@@ -11,7 +7,7 @@ resource "aws_security_group" "devops_sg" {
   description = "Allow SSH and Jenkins access"
 
   ingress {
-    description = "SSH"
+    description = "SSH Access"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -19,7 +15,7 @@ resource "aws_security_group" "devops_sg" {
   }
 
   ingress {
-    description = "Jenkins"
+    description = "Jenkins Access"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
@@ -45,34 +41,14 @@ resource "aws_instance" "dev_server" {
 
   ami                         = var.ami_id
   instance_type               = var.instance_type
-  key_name                    = var.key_name
   associate_public_ip_address = true
-
-  vpc_security_group_ids = [aws_security_group.devops_sg.id]
 
   user_data                   = file("userdata.sh")
   user_data_replace_on_change = true
 
+  vpc_security_group_ids = [aws_security_group.devops_sg.id]
+
   tags = {
-    Name = "DevOps-Server"
+    Name = "ALLSERVERS"
   }
-}
-
-# -----------------------------
-# Variables
-# -----------------------------
-variable "ami_id" {
-  description = "Amazon Linux 2 AMI ID"
-  type        = string
-}
-
-variable "instance_type" {
-  description = "EC2 Instance Type"
-  type        = string
-  default     = "t2.micro"
-}
-
-variable "key_name" {
-  description = "EC2 Key Pair Name"
-  type        = string
 }
