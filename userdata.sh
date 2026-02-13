@@ -1,39 +1,38 @@
 #!/bin/bash
 
 # Update system
-yum update -y
+dnf update -y
 
 # -----------------------------
 # Install Git
 # -----------------------------
-yum install -y git
+dnf install -y git
 
 # -----------------------------
 # Install Docker
 # -----------------------------
-yum install -y docker
-systemctl start docker
+dnf install -y docker
 systemctl enable docker
+systemctl start docker
 usermod -aG docker ec2-user
 
 # -----------------------------
 # Install Java 17 (Required for Jenkins)
 # -----------------------------
-yum install -y java-17-openjdk
-
-# Set JAVA_HOME automatically
-JAVA_PATH=$(dirname $(dirname $(readlink -f $(which java))))
-echo "JAVA_HOME=$JAVA_PATH" >> /etc/environment
+dnf install -y java-17-amazon-corretto
 
 # -----------------------------
-# Install Jenkins
+# Add Jenkins Repository (RHEL compatible)
 # -----------------------------
 wget -O /etc/yum.repos.d/jenkins.repo \
 https://pkg.jenkins.io/redhat-stable/jenkins.repo
 
 rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 
-yum install -y jenkins
+# -----------------------------
+# Install Jenkins
+# -----------------------------
+dnf install -y jenkins
 
 systemctl daemon-reload
 systemctl enable jenkins
