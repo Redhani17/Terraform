@@ -6,6 +6,7 @@ resource "aws_instance" "dev_server" {
   user_data = file("userdata.sh")
 
   tags = {
-    Name = "Terraform1"
+    Name = "server"
   }
 }
+
