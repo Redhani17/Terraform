@@ -1,26 +1,26 @@
 #!/bin/bash
 
-sudo dnf update -y
+yum update -y
 
 # Install Git
-sudo dnf install git -y
+yum install -y git
 
 # Install Docker
-sudo dnf install docker -y
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo usermod -aG docker ec2-user
+yum install -y docker
+systemctl start docker
+systemctl enable docker
+usermod -aG docker ec2-user
 
 # Install Java
-sudo dnf install java-17-amazon-corretto -y
+amazon-linux-extras install java-openjdk11 -y
 
 # Install Jenkins
-sudo wget -O /etc/yum.repos.d/jenkins.repo \
+wget -O /etc/yum.repos.d/jenkins.repo \
 https://pkg.jenkins.io/redhat-stable/jenkins.repo
 
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 
-sudo dnf install jenkins -y
+yum install -y jenkins
 
-sudo systemctl enable jenkins
-sudo systemctl start jenkins
+systemctl enable jenkins
+systemctl start jenkins
